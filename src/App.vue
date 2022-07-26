@@ -4,7 +4,6 @@
     <el-button>Default</el-button>
     <el-button type="primary">Primary</el-button>
   </div>
-  <login></login>
 </template>
 
 <script setup lang="ts">
