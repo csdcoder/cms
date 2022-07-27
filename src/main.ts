@@ -13,7 +13,14 @@ app.use(globalCmp) // 注册全局组件
 app.use(createPinia())
 app.mount('#app')
 
-hyRequest.request({
+
+interface DataType {
+  data: any
+  returnCode: string
+  success: boolean
+}
+
+hyRequest.request<DataType>({
   url: "/",
   method: "POST",
   interceptors: {
@@ -26,6 +33,13 @@ hyRequest.request({
       return config
     },
   },
-  showLoading: false,
+  showLoading: true,
+}).then((res) => {
+  console.log(res)
+  console.log(res.data)
+  console.log(res.returnCode)
+  console.log(res.success)
+}).catch((err) => {
+  console.log(err)
 })
 

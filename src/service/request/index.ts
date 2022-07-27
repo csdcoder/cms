@@ -5,7 +5,7 @@ import { ElLoading } from 'element-plus'
 
 
 const DEFAULT_LOADING = false
-
+ 
 class HYRequest {
   instance: AxiosInstance
   interceptors?: HYRequestInterceptors
@@ -17,6 +17,8 @@ class HYRequest {
     this.showLoading = config.showLoading ?? DEFAULT_LOADING
     this.interceptors = config.interceptors
 
+    // 使用拦截器
+    // 1.从config中取出的拦截器
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptor,
       this.interceptors?.requestInterceptorCatch
@@ -26,13 +28,13 @@ class HYRequest {
       this.interceptors?.responseInterceptorCatch
     )
 
-    // 添加所有的实例都有的拦截器
+    // 2.添加所有的实例都有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
         // console.log("拦截请求")
         if (this.showLoading) {
           this.loadingInstance = ElLoading.service({
-            lock: true,
+            // lock: true,
             text: "正在加载...",
             background: "rgba(0,0,0,0.5)"
           })
@@ -47,7 +49,7 @@ class HYRequest {
         setTimeout(() => {
           this.loadingInstance?.close()
         }, 300)
-        return res.data
+        return res
       },
       (err) => {
         setTimeout(() => {
@@ -56,11 +58,12 @@ class HYRequest {
         return err
       }
     )
-
   }
 
+  // 自封装请求方法
   // <T>用来声明服务器返回的纯数据类型
-  request<T>(config: HYRequestConfig) {
+  request<T=unknown>(config: HYRequestConfig): Promise<T> {
+    return new Promise((resolve, reject) => {      
       if(config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
       }
@@ -70,18 +73,36 @@ class HYRequest {
       }
 
       this.instance.request(config).then((res) => {
+        // 单个请求对数据的处理
         if(config.interceptors?.responseInterceptor) {
           res = config.interceptors?.responseInterceptor(res)
         }
-        // console.log(res.data)
+        
         this.showLoading = DEFAULT_LOADING   // 重置showLoading
-        console.log(res as any as T)
-        return res as any as T
+
+        // console.log(res.data as T)   // 将data声明为<T>类型
+        // return res as any as T
+        resolve(res.data)
       }).catch(err => {
         this.showLoading = DEFAULT_LOADING   // 重置showLoading
-        return err
+        reject(err)
       })
+    })
   }
+
+  get<T=unknown>(config: HYRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: "GET"})
+  }
+  post<T=unknown>(config: HYRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: "POST"})
+  }
+  delete<T=unknown>(config: HYRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: "DELETE"})
+  }
+  patch<T=unknown>(config: HYRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: "PATCH"})
+  }
+
 }
 
 export default HYRequest
