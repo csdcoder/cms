@@ -1,22 +1,20 @@
 <template>
-  <div>
-    {{ name }}
-    <el-button>Default</el-button>
-    <el-button type="primary">Primary</el-button>
+  <div class="app">
+    <router-view></router-view>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { useStore } from "./store"
-  import { storeToRefs } from "pinia"
-  import { ElButton } from "element-plus"
+  // import { useStore } from "./store"
+  // import { storeToRefs } from "pinia"
 
-  const store = useStore()
-
-  const { name } = storeToRefs(store)
+  // const store = useStore()
 
 </script>
 
 <style scoped>
-
+.app {
+  width: 100%;
+  height: 100%;
+}
 </style>
