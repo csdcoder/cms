@@ -15,10 +15,11 @@
 <script setup lang="ts" name="login-account">
 import { reactive, ref } from "vue"
 import { ElForm } from "element-plus"
-import localCache from "../../../utils/cache"
-
+import localCache from "@/utils/cache"
+import { loginStore } from "@/store/login"
 import { rules } from "../config/account-config"
 
+const store = loginStore()
 const account = reactive({
   name: localCache.getCache("name") ?? "",
   password: localCache.getCache("password") ?? ""
@@ -39,6 +40,7 @@ const loginAction = (isKeepPassword: boolean) => {
         localCache.deleteCache("name", "password")
       }
       // 2. 开始进行登录验证
+      store.accountLoginAction(account)
     }
   })
 }

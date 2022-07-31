@@ -9,5 +9,10 @@ export default defineConfig({
     vue(),    
     VueSetupExtend(),
     ElementPlus()
-  ]
+  ],
+  resolve: {
+    alias: {
+      "@": "/src"
+    }
+  }
 })
