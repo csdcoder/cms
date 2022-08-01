@@ -27,6 +27,7 @@
       <el-checkbox v-model="isKeepPassword">记住密码</el-checkbox>
       <el-link>忘记密码</el-link>
     </div>
+    <el-alert v-show="!isAuth" title="用户名或密码错误" type="error" center show-icon />
     <el-button type="primary" class="login-btn" @click="handleLoginClick">立即登录</el-button>
   </div>
 </template>
@@ -35,7 +36,11 @@ import { ref } from "vue"
 import { Avatar, Iphone } from '@element-plus/icons-vue'
 import LoginAccount from "./login-account.vue"
 import LoginPhone from "./login-phone.vue"
+import { loginStore } from "@/store/login"
+import { storeToRefs } from "pinia"
 
+const store = loginStore()
+const { isAuth } = storeToRefs(store)
 const isKeepPassword = ref(true)
 const accountRef = ref<InstanceType<typeof LoginAccount>>()
 // const phoneRef = ref<InstanceType<typeof LoginPhone>>()
@@ -86,5 +91,12 @@ const handleLoginClick = () => {
   .login-btn {
     width: 100%;
     margin-top: 10px;
+  }
+
+  .el-alert {
+    margin: 0px 0 0;
+  }
+  .el-alert:first-child {
+    margin: 0;
   }
 </style>
