@@ -31,6 +31,7 @@
     <el-button type="primary" class="login-btn" @click="handleLoginClick">立即登录</el-button>
   </div>
 </template>
+
 <script setup lang="ts" name="login-panel">
 import { ref } from "vue"
 import { Avatar, Iphone } from '@element-plus/icons-vue'
