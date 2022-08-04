@@ -9,6 +9,7 @@ import router from "@/router"
 export const loginStore = defineStore("login", {
   state: () => {
     return {
+      token: '',
       userInfo: {} as any,
       isAuth: true,
       userMenus: [] as any
@@ -26,7 +27,7 @@ export const loginStore = defineStore("login", {
       }
       this.isAuth = true   // 重置
       const { id, token } = loginResult.data
-      // token = token_str
+      this.token = token
       localCache.setCache("token", token)
 
       // 2.请求用户信息
@@ -47,7 +48,23 @@ export const loginStore = defineStore("login", {
 
     async phoneLoginAction(payload: any) {
       console.log("执行phoneLoginAction", payload)
+    },
+
+    loadLocalLogin() {
+      const token = localCache.getCache('token')
+      if(token) {
+        this.token = token
+      }
+      const userInfo = localCache.getCache('userInfo')
+      if(userInfo) {
+        this.userInfo = userInfo
+      }      
+      const userMenus = localCache.getCache('userMenus')
+      if(userMenus) {
+        this.userMenus = userMenus
+      }
     }
+
   }
 
 

@@ -11,14 +11,26 @@ import {
   ElCheckbox,
   ElLink,
   ElButton,
-  ElAlert
+  ElAlert,
+  ElContainer,
+  ElAside,
+  ElHeader,
+  ElMain,
+  ElMenu,
+  ElSubMenu,
+  ElMenuItemGroup,
+  ElMenuItem
 } from "element-plus"
 
 // 全局注册的组件
 const components: any[] = [
   ElForm, ElFormItem, ElInput,
   ElTabs, ElTabPane, ElIcon, ElCheckbox, ElLink, ElButton,
-  ElAlert
+  ElAlert, ElContainer, ElAside, ElHeader, ElMain,
+  ElMenu,
+  ElSubMenu,
+  ElMenuItemGroup,
+  ElMenuItem
 ]
 
 export default function(app: App): void {
