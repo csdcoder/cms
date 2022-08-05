@@ -14,6 +14,7 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "noUnusedParameters": true,
+    "noUnusedLocals": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

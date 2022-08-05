@@ -2,20 +2,21 @@
   <div class="nav-menu">
     <div class="logo">
       <img class="img" src="@/assets/img/logo.svg" alt="logo">
-      <span class="title">Vue3+TS</span>
+      <span v-if="!collapse" class="title"> Vue3+TS </span>
     </div>
-    <el-menu 
-      default-active="2" 
-      class="el-menu-vertical" 
+    <el-menu
+      default-active="2"
+      class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
+      :collapse="collapse"
     >
       <template v-for="item in userMenus" :key="item.id">
         <template v-if="item.type == 1">
           <el-sub-menu :index="item.id">
             <template #title>
-              <!-- <el-icon>{{item.icon}}</el-icon> -->
+              <el-icon><component v-bind:is="item.icon"></component></el-icon>
               <span>{{ item.name }}</span>
             </template>
             <template v-for="subitem in item.children" :key="subitem.id">
@@ -41,10 +42,17 @@
 
 <script setup lang="ts" name="nav-menu">
   import { loginStore } from "@/store/login"
-  // import { Iphone } from '@element-plus/icons-vue'
+  import { Iphone as iphone } from '@element-plus/icons-vue'
 
   const store = loginStore()
   const {userMenus} = store
+
+  const props = defineProps({
+    collapse: {
+      type: Boolean,
+      default: false
+    }
+  })
 
 </script>
 
@@ -57,7 +65,7 @@
     .logo {
       display: flex;
       height: 28px;
-      padding: 12px 10px 8px 10px;
+      padding: 12px 10px 8px 0px;
       flex-direction: row;
       justify-content: flex-start;
       align-items: center;
@@ -78,17 +86,41 @@
       border-right: none;
     }
 
-    .el-submenu {
+    .el-sub-menu {
       background-color: #001529 !important;
 
       .el-menu-item {
         padding-left: 50px !important;
-        background-color: #0c2135 !important;
+
+        span {
+          -webkit-user-select:none;
+          -moz-user-select:none;
+          -ms-user-select:none;
+          user-select:none;
+        }
       }
     }
-
-    ::v-deep .el-submenu__title {
+    
+    :deep .el-sub-menu__title {
       background-color: #001529 !important;
+      padding-left: 13px !important;
+      padding-right: 27px !important;
+
+      .el-icon {
+        padding-right: 7px;
+      }
+
+      .el-sub-menu__icon-arrow {
+        padding-right: 0;
+      }
+
+      span {
+        -webkit-user-select:none;
+        -moz-user-select:none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
     }
 
     .el-menu-item:hover {
@@ -105,4 +137,5 @@
     width: 100%;
     height: calc(100% - 48px);
   }
+
 </style>

@@ -3,9 +3,10 @@ import { defineStore } from "pinia"
 
 import { accountLoginRequest, requestUserInfoById, requestUserMenusByRoleId } from "@/service/login/login"
 import localCache from "@/utils/cache"
+
 import { IAccount } from "@/service/login/type"
 import router from "@/router"
-
+import { mapMenusToRoutes } from "@/utils/map-menus"
 export const loginStore = defineStore("login", {
   state: () => {
     return {
@@ -16,8 +17,17 @@ export const loginStore = defineStore("login", {
     }
   },
   actions: {
+    changeUserMenus(userMenus:any) {
+      this.userMenus = userMenus
+      const routes = mapMenusToRoutes(this.userMenus)
+      routes.forEach((route) => {
+        router.addRoute("main", route)
+      })
+      // console.log(routes)
+    },
+
     async accountLoginAction(payload: IAccount) {
-          // 1.实现登录逻辑
+      // 1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
       if(typeof loginResult == "string") {  // 用户名或者密码错误，后台返回字符串提示信息
         this.isAuth = false
@@ -38,9 +48,9 @@ export const loginStore = defineStore("login", {
 
       // 3.请求用户菜单
       const userMenusResult = await requestUserMenusByRoleId(this.userInfo.role.id)
-      this.userMenus = userMenusResult
+      this.changeUserMenus(userMenusResult)
       localCache.setCache("userMenus", this.userMenus)
-      console.log(this.userMenus)
+      mapMenusToRoutes(this.userMenus)
 
       // 4.调到首页
       router.push("/main")
@@ -61,8 +71,9 @@ export const loginStore = defineStore("login", {
       }      
       const userMenus = localCache.getCache('userMenus')
       if(userMenus) {
-        this.userMenus = userMenus
+        this.changeUserMenus(userMenus)
       }
+
     }
 
   }
