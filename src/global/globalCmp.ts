@@ -7,6 +7,10 @@ import {
   ElAlert, 
   ElContainer, ElAside, ElHeader, ElMain,
   ElMenu, ElSubMenu, ElMenuItemGroup, ElMenuItem,
+  ElDropdown, ElDropdownItem, ElDropdownMenu,
+  ElCol, ElRow,
+  ElSelect, ElOption,
+  ElDatePicker, ElBreadcrumb, ElBreadcrumbItem,
 } from "element-plus"
 
 import { Iphone, Setting, Files, Goods } from '@element-plus/icons-vue'
@@ -18,7 +22,11 @@ const components: any[] = [
   ElAlert, 
   ElContainer, ElAside, ElHeader, ElMain,
   ElMenu, ElSubMenu, ElMenuItemGroup, ElMenuItem,
-  Iphone, Setting, Files, Goods
+  Iphone, Setting, Files, Goods,
+  ElDropdown, ElDropdownItem, ElDropdownMenu,
+  ElCol, ElRow,
+  ElSelect, ElOption,
+  ElDatePicker, ElBreadcrumb, ElBreadcrumbItem,
 ]
 
 export default function(app: App): void {

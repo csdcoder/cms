@@ -5,12 +5,12 @@
       <span v-if="!collapse" class="title"> Vue3+TS </span>
     </div>
     <el-menu
-      default-active="2"
+      :default-active="defaultValue"
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
-      :collapse="collapse"
+      :collapse="props.collapse"
     >
       <template v-for="item in userMenus" :key="item.id">
         <template v-if="item.type == 1">
@@ -20,7 +20,7 @@
               <span>{{ item.name }}</span>
             </template>
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id">
+              <el-menu-item :index="subitem.id" @click="handleMenuItemClick(subitem)">
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
             </template>            
@@ -41,11 +41,21 @@
 
 
 <script setup lang="ts" name="nav-menu">
+  import { ref } from "vue"
   import { loginStore } from "@/store/login"
-  import { Iphone as iphone } from '@element-plus/icons-vue'
+  import { useRouter, useRoute } from "vue-router"
+
+  import { pathMapToMenu} from "@/utils/map-menus"
+
 
   const store = loginStore()
   const {userMenus} = store
+
+  const route = useRoute()
+  const currentPath= route.path
+  const menu = pathMapToMenu(userMenus, currentPath)
+  const defaultValue = ref(menu.id + '')
+
 
   const props = defineProps({
     collapse: {
@@ -53,6 +63,14 @@
       default: false
     }
   })
+
+  const router = useRouter()
+
+  const handleMenuItemClick = (item: any) => {
+    router.push({
+      path: item.url ?? "not-found"
+    })
+  }
 
 </script>
 
