@@ -12,6 +12,7 @@ import {
   ElSelect, ElOption,
   ElDatePicker, ElBreadcrumb, ElBreadcrumbItem,
   ElTable, ElTableColumn,
+  ElPagination, ElImage,
 } from "element-plus"
 
 import { Iphone, Setting, Files, Goods } from '@element-plus/icons-vue'
@@ -29,7 +30,7 @@ const components: any[] = [
   ElSelect, ElOption,
   ElDatePicker, ElBreadcrumb, ElBreadcrumbItem,
   ElTable, ElTableColumn,
-
+  ElPagination, ElImage,
 ]
 
 export default function(app: App): void {

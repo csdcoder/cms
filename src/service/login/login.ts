@@ -4,8 +4,8 @@ import { IAccount, IDataType, ILoginResult } from "./type"
 
 enum LoginAPI {
   AccountLogin = "/login",
-  LoginUserInfo = "/users/",  // eg: /users/id
-  UserMenus = "/role/"  // eg: role/id/menus
+  LoginUserInfo = "/users/info/",  // eg: /users/info/id
+  UserMenus = "/role/menus/"  // eg: role/menus/id
 }
 
 export function accountLoginRequest(account: IAccount) {
@@ -23,6 +23,6 @@ export function requestUserInfoById(id: number) {
 
 export function requestUserMenusByRoleId(id: number) {
   return hyRequest.get<IDataType>({
-    url: LoginAPI.UserMenus + id + '/menus'
+    url: LoginAPI.UserMenus + id
   })
 }

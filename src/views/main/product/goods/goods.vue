@@ -1,18 +1,13 @@
 <template>
   <div class="goods">
-    <h2>goods</h2>
+    <page-content :contentTableConfig="contentTableConfig" pageName="Goods"></page-content>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import PageContent from '@/components/page-content';
+import { contentTableConfig } from './config/content.config';
 
-export default defineComponent({
-  name: 'goods',
-  setup() {
-    return {}
-  }
-})
 </script>
 
-<style scoped></style>
+<style scope lang="less"></style>

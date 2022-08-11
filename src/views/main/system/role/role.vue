@@ -1,18 +1,28 @@
 <template>
   <div class="role">
-    <h2>role</h2>
+    <page-search :searchFormConfig="searchFormConfig" @resetBtnClick="handleResetClick"
+      @queryBtnClick="handleQueryClick" />
+    <page-content pageName="Role" :contentTableConfig="contentTableConfig" ref="pageContentRef" />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts" name="vue">
+import { ref } from "vue"
+import PageSearch from "@/components/page-search";
+import PageContent from "@/components/page-content"
 
-export default defineComponent({
-  name: 'role',
-  setup() {
-    return {}
-  }
-})
+import { searchFormConfig } from "./config/search.config";
+import { contentTableConfig } from "./config/content.config"
+
+const pageContentRef = ref<InstanceType<typeof PageContent>>()
+
+const handleResetClick = () => {
+  pageContentRef.value?.getPageData()
+}
+
+const handleQueryClick = (queryInfo: any) => {
+  pageContentRef.value?.getPageData(queryInfo)
+}
 </script>
 
-<style scoped></style>
+<style scope lang="less"></style>

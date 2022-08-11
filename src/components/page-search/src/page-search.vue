@@ -6,17 +6,17 @@
       </template>
       <template #footer>
         <div class="handle-btns">
-          <el-button>重置</el-button>
-          <el-button type="primary">搜索</el-button>
+          <el-button @click="handleResetClick">重置</el-button>
+          <el-button @click="handleQuery" type="primary">搜索</el-button>
         </div>
       </template>
     </hy-form>
   </div>
 </template>
-<script setup lang="ts">
-import { reactive } from "vue"
-import HyForm from "@/base-ui/form"
 
+<script setup lang="ts">
+import { ref } from "vue"
+import HyForm from "@/base-ui/form"
 
 const props = defineProps({
   searchFormConfig: {
@@ -25,15 +25,31 @@ const props = defineProps({
   }
 })
 
-const formData = reactive({
-  id: "",
-  name: "",
-  password: "",
-  sport: "",
-  createTime: ""
-})
+const emit = defineEmits(['resetBtnClick', 'queryBtnClick'])
+
+// search中双向绑定的属性应该由配置中的field来决定
+const formItems = props.searchFormConfig.formItems
+const formInitData: any = {}
+for (const item of formItems) {
+  formInitData[item.field] = ''
+}
+
+const formData = ref({ ...formInitData })
+
+// 当用户点击重置
+const handleResetClick = () => {
+  formData.value = { ...formInitData }
+  emit('resetBtnClick')
+}
+
+// 当用户点击搜索
+const handleQuery = () => {
+  emit('queryBtnClick', formData.value)
+}
+
 </script>
-<style scope>
+
+<style scoped lang="less">
 .header {
   color: red;
 }
