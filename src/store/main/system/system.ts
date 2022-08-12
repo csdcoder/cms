@@ -9,7 +9,9 @@ export const systemStore = defineStore("system", {
       roleList: [] as any[],
       roleCount: 0,
       goodsList: [] as any[],
-      goodsCount: 0,      
+      goodsCount: 0, 
+      menuList: [] as any[],
+      menuCount: 0,      
     }
   },
   getters: {
@@ -43,6 +45,12 @@ export const systemStore = defineStore("system", {
     changeGoodsCount(count: number) {
       this.goodsCount = count
     },    
+    changeMenuList(list: any[]) {
+      this.menuList = list
+    },
+    changeMenuCount(count: number) {
+      this.menuCount = count
+    },
     async getPageList(payload: any) {
       // 1.获取pageUrl
       const pageName = payload.pageName
@@ -50,7 +58,7 @@ export const systemStore = defineStore("system", {
 
       // 2.对页面发送请求
       let pageResult = await getPageListData(pageUrl, payload.queryInfo)
-      console.log(pageResult)
+      // console.log(pageResult)
       // 3.将数据存储到state中
       const { list, totalCount } = pageResult.data
       // 动态调用方法

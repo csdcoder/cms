@@ -36,6 +36,7 @@ export const loginStore = defineStore("login", {
         return false
       }
       this.isAuth = true   // 重置
+      // console.log(loginResult)
       const { id, token } = loginResult.data
       this.token = token
       localCache.setCache("token", token)

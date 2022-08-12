@@ -1,6 +1,14 @@
 <template>
   <div class="goods">
-    <page-content :contentTableConfig="contentTableConfig" pageName="Goods"></page-content>
+    <page-content :contentTableConfig="contentTableConfig" pageName="Goods">
+      <template #image="scope">
+        <el-image :src="scope.row.imgUrl" :preview-src-list="[scope.row.imgUrl]" style="width: 60px; height: 60px;"
+          fit="cover" preview-teleported lazy hide-on-click-modal />
+      </template> 
+      <template #oldPrice="scope">
+        {{ "￥"+scope.row.oldPrice}}
+      </template>
+    </page-content>
   </div>
 </template>
 

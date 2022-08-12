@@ -19,11 +19,14 @@
         <el-button size="small" :icon="Edit" text>编辑</el-button>
         <el-button size="small" :icon="Delete" text>删除</el-button>
       </template>
-      <template #image="scope">
+      <!-- <template #image="scope">
         <el-image :src="scope.row.imgUrl" :preview-src-list="[scope.row.imgUrl]" style="width: 60px; height: 60px;"
           fit="cover" preview-teleported lazy hide-on-click-modal />
+      </template> -->
+      <template v-for="item in otherPropsSlots" :key="item.prop" #[item.slotName]="scope" >
+        <slot :name="item.slotName" :row="scope.row"></slot>
       </template>
-    </hy-table> 
+    </hy-table>
   </div>
 </template>
 
@@ -51,7 +54,7 @@ const props = defineProps({
 const store = systemStore()
 
 // 双向绑定pageInfo
-const pageInfo = ref({ currentPage: 1, pageSize: 10})
+const pageInfo = ref({ currentPage: 1, pageSize: 10 })
 watch(pageInfo, () => getPageData())
 
 // 发送网络请求
@@ -59,7 +62,7 @@ const getPageData = (queryInfo: any = {}) => {
   store.getPageList({
     pageName: props.pageName,
     queryInfo: {
-      offset: (pageInfo.value.currentPage-1) * pageInfo.value.pageSize,
+      offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
       size: pageInfo.value.pageSize,
       ...queryInfo
     }
@@ -67,13 +70,22 @@ const getPageData = (queryInfo: any = {}) => {
 }
 getPageData()
 
-const listData = computed(() => 
+const listData = computed(() =>
   store.pageListData(props.pageName)
 )
+// console.log(listData)
 const dataCount = computed(() =>
   store.pageListCount(props.pageName)
 )
 
+// 获取其他的动态插槽
+const defaultSlots = ['status', 'createAt', 'updateAt', 'handler']
+const otherPropsSlots = props.contentTableConfig.propsList.filter(
+  (item: any) => {
+    if (defaultSlots.includes(item.slotName) || item.slotName === undefined) { return false }
+    return true
+  }
+)
 
 defineExpose({
   getPageData
@@ -81,10 +93,8 @@ defineExpose({
 </script>
 
 <style scope lang="less">
-
 .page-content {
   padding: 20px;
   border-top: 20px solid #f5f5f5;
 }
-
 </style>
