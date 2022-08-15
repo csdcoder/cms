@@ -15,9 +15,9 @@
       <template #createAt="scope">
         <strong>{{ scope.row.createAt }}</strong>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <el-button size="small" :icon="Edit" text>编辑</el-button>
-        <el-button size="small" :icon="Delete" text>删除</el-button>
+        <el-button size="small" :icon="Delete" text @click="handleDeleteClick(scope.row)">删除</el-button>
       </template>
       <!-- <template #image="scope">
         <el-image :src="scope.row.imgUrl" :preview-src-list="[scope.row.imgUrl]" style="width: 60px; height: 60px;"
@@ -86,6 +86,15 @@ const otherPropsSlots = props.contentTableConfig.propsList.filter(
     return true
   }
 )
+
+// 删除/编辑/新建操作
+const handleDeleteClick = (item: any) => {
+  console.log(item)
+  store.deletePageData({
+    pageName: props.pageName,
+    id: item.id
+  })
+}
 
 defineExpose({
   getPageData

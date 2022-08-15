@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { getPageListData } from "@/service/main/system/system"
+import { deletePageData, getPageListData } from "@/service/main/system/system"
 
 export const systemStore = defineStore("system", {
   state: () => {
@@ -65,6 +65,21 @@ export const systemStore = defineStore("system", {
       eval("this.change" + pageName + "List(list)")
       eval("this.change" + pageName + "Count(totalCount)")
 
+    },
+
+    async deletePageData(payload: any) {
+      // pageName/delete/id
+      const { pageName, id } = payload
+      const pageUrl = `/${pageName}/delete/${id}`
+      await deletePageData(pageUrl)
+
+      this.getPageList({
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
     }
   }
 })
